@@ -43,7 +43,7 @@ tasks {
 }
 
 bukkitPluginYaml {
-    apiVersion = "1.18"
+    apiVersion = "26.2"
     depend.add("squaremap")
     authors.add("jmp")
 }

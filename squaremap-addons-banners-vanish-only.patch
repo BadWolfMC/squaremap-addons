@@ -1,0 +1,142 @@
+diff --git a/README.md b/README.md
+index 919792e9524299a8462c86a32db0a4bf5d75f314..b94ce577798915e9ea8b1a2395ab9d6b5ff67c0a 100644
+--- a/README.md
++++ b/README.md
+@@ -1,58 +1,23 @@
+-# squaremap-addons
+-
+-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jpenilla/squaremap-addons/build.yml?branch=master)](https://github.com/jpenilla/squaremap-addons/actions)
+-[![Discord](https://img.shields.io/discord/390942438061113344?color=8C9CFE&label=discord&logo=discord&logoColor=white)](https://discord.gg/PHpuzZS)
+-
+-Various addons for [squaremap](https://github.com/jpenilla/squaremap)
+-
+-## Addon list
+-- [squaremap-banners](https://github.com/jpenilla/squaremap-addons/tree/master/addons/banners)
+-  - Shows banners on the map in a similar way to vanilla maps
+-- [squaremap-claimchunk](https://github.com/jpenilla/squaremap-addons/tree/master/addons/claimchunk)
+-  - [ClaimChunk](https://www.spigotmc.org/resources/claimchunk.44458/) integration for squaremap
+-- [squaremap-deathspot](https://github.com/jpenilla/squaremap-addons/tree/master/addons/deathspot)
+-  - DeathSpot addon for squaremap
+-- [squaremap-essentialsx](https://github.com/jpenilla/squaremap-addons/tree/master/addons/essentialsx)
+-  - [EssentialsX](https://essentialsx.net/) integration for squaremap
+-- [squaremap-griefprevention](https://github.com/jpenilla/squaremap-addons/tree/master/addons/griefprevention)
+-  - [GriefPrevention](https://www.spigotmc.org/resources/griefprevention.1884/) integration for squaremap
+-- [squaremap-mobs](https://github.com/jpenilla/squaremap-addons/tree/master/addons/mobs)
+-  - Shows mobs on squaremap
+-- [squaremap-signs](https://github.com/jpenilla/squaremap-addons/tree/master/addons/signs)
+-  - Shows placed signs on squaremap
+-- [squaremap-skins](https://github.com/jpenilla/squaremap-addons/tree/master/addons/skins)
+-  - Custom skin support for squaremap
+-- [squaremap-vanish](https://github.com/jpenilla/squaremap-addons/tree/master/addons/vanish)
+-  - Integration with various vanish plugins for squaremap
+-- [squaremap-worldguard](https://github.com/jpenilla/squaremap-addons/tree/master/addons/worldguard)
+-  - [WorldGuard](https://enginehub.org/worldguard/) integration for squaremap
+-
+-## Download
+-Download the latest builds from [this link](https://nightly.link/jpenilla/squaremap-addons/workflows/build/master/artifacts.zip)
++# BadWolfMC squaremap addons
+ 
+-## Building from source
++This fork builds the two squaremap addons used by BadWolfMC against Paper 26.2 and Java 25.
+ 
+-Build squaremap-addons by invoking the `build` task with Gradle.
++## Built addons
+ 
+-```
+-./gradlew build
+-```
++- `squaremap-banners` — shows banner markers on squaremap in a similar way to vanilla maps.
++- `squaremap-vanish` — hides vanished players from squaremap, with direct support for SuperVanish and PremiumVanish and a metadata-based compatibility fallback.
+ 
+-Built artifacts will be saved in `./build/libs/`.
++The upstream source directories for other addons remain in the repository for reference, but they are intentionally excluded from the Gradle project and are not built or maintained by this fork.
+ 
+-## Note
++## Building from source
++
++```bash
++./gradlew clean build
++```
+ 
+-<details>
+-  <summary>The source code for some modules is derivative of works in the following repositories:</summary>
++Built plugin artifacts are written to `build/libs/`.
+ 
+-- squaremap-banners: [Pl3xMap-Banners](https://github.com/granny/Pl3xMap-Banners)
+-- squaremap-claimchunk: [Pl3xMap-ClaimChunk](https://github.com/pl3xgaming/Pl3xMap-ClaimChunk)
+-- squaremap-deathspot: [Pl3xMap-DeathSpot](https://github.com/pl3xgaming/Pl3xMap-DeathSpot)
+-- squaremap-essentialsx: [Pl3xMap-Essentials](https://github.com/pl3xgaming/Pl3xMap-Essentials)
+-- squaremap-griefprevention: [Pl3xMap-GriefPrevention](https://github.com/pl3xgaming/Pl3xMap-GriefPrevention)
+-- squaremap-mobs: [Pl3xMap-Mobs](https://github.com/pl3xgaming/Pl3xMap-Mobs)
+-- squaremap-signs: [Pl3xMap-Signs](https://github.com/pl3xgaming/Pl3xMap-Signs)
+-- squaremap-skins: [Pl3xMap-Skins](https://github.com/pl3xgaming/Pl3xMap-Skins)
+-- squaremap-worldguard: [Pl3xMap-WorldGuard](https://github.com/pl3xgaming/Pl3xMap-WorldGuard)
++## Attribution
+ 
+-</details>
++This repository is forked from [jpenilla/squaremap-addons](https://github.com/jpenilla/squaremap-addons).
++The banners addon contains code derived from [Pl3xMap-Banners](https://github.com/granny/Pl3xMap-Banners).
+diff --git a/settings.gradle.kts b/settings.gradle.kts
+index 1baddb74db5785321d79e732ead9cece87a22451..762473cfa21f8e44609735037b69d1fbe561bac0 100644
+--- a/settings.gradle.kts
++++ b/settings.gradle.kts
+@@ -8,27 +8,11 @@ dependencyResolutionManagement {
+                 includeGroup("xyz.jpenilla")
+             }
+         }
+-        maven("https://maven.enginehub.org/repo/") {
+-            mavenContent {
+-                includeGroup("com.sk89q")
+-                includeGroupByRegex("com\\.sk89q\\..*")
+-            }
+-        }
+-        maven("https://repo.essentialsx.net/releases/") {
+-            mavenContent {
+-                includeGroup("net.essentialsx")
+-            }
+-        }
+         maven("https://jitpack.io/") {
+             mavenContent {
+                 includeGroupByRegex("com\\.github\\..*")
+             }
+         }
+-        modrinthMavenWorkaround(
+-            "claimchunk",
+-            "0.0.25-FIX3",
+-            "claimchunk-0.0.25-FIX3-plugin.jar"
+-        )
+     }
+     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+ }
+@@ -41,14 +25,7 @@ rootProject.name = "squaremap-addons"
+ 
+ include(":common")
+ 
+-includeAddon("signs")
+-includeAddon("mobs")
+-includeAddon("worldguard")
+-includeAddon("essentialsx")
+-includeAddon("deathspot")
+-includeAddon("skins")
+-includeAddon("griefprevention")
+-includeAddon("claimchunk")
++// BadWolfMC only builds and maintains the addons used in production.
+ includeAddon("banners")
+ includeAddon("vanish")
+ 
+@@ -59,15 +36,3 @@ fun includeAddon(addonName: String) {
+         projectDir = file("addons/$addonName")
+     }
+ }
+-
+-// https://github.com/modrinth/code/issues/2428
+-fun RepositoryHandler.modrinthMavenWorkaround(nameOrId: String, version: String, fileName: String) {
+-    val url = "https://api.modrinth.com/maven/maven/modrinth/$nameOrId/$version/$fileName"
+-    val group = "maven.modrinth.workaround"
+-    ivy(url.substringBeforeLast('/')) {
+-        name = "Modrinth Maven Workaround for $nameOrId"
+-        patternLayout { artifact(url.substringAfterLast('/')) }
+-        metadataSources { artifact() }
+-        content { includeModule(group, nameOrId) }
+-    }
+-}
