@@ -29,7 +29,7 @@ tasks.jar {
 }
 
 java.toolchain {
-    languageVersion.set(JavaLanguageVersion.of(21))
+    languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {
