@@ -8,7 +8,7 @@ dependencies {
     api(platform("org.spongepowered:configurate-bom:4.2.0"))
     api("org.spongepowered:configurate-yaml")
 
-    compileOnlyApi("io.papermc.paper:paper-api:26.2.build.+") {
+    compileOnlyApi("io.papermc.paper:paper-api:26.3.build.+") {
         exclude("org.yaml", "snakeyaml")
     }
     compileOnlyApi("xyz.jpenilla:squaremap-api:1.4.0")
